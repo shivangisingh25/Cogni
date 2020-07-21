@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: Cogni-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: Cogni
+  template:
+    metadata:
+      labels:
+        app: Cogni
+    spec:
+      containers:
+      - name: cogni
+        image: cognicr.azurecr.io/cognirepos:latest
+        ports:
+        - containerPort: 8080
+      imagePullSecrets:
+      - name: cognisn
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cogni
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+  selector:
+    app: Cogni
